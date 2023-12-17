@@ -1,5 +1,7 @@
 package com.travelmanagement.travelsystem.services.Impl;
 
+import com.travelmanagement.travelsystem.entities.Hotel;
+import com.travelmanagement.travelsystem.entities.User;
 import com.travelmanagement.travelsystem.repository.UserRepository;
 import com.travelmanagement.travelsystem.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +26,10 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
             }
         };
+    }
+
+    public User getUserById(Long id){
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
     }
 }
