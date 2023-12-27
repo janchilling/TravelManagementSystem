@@ -1,17 +1,47 @@
-import React, { useState, useContext } from 'react';
+import * as React from 'react';
+import { useState, useContext } from "react";
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import '../Auth/login.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import login_logo from "../../images/Login_img/loginpic2.jpg";
-import UserContext from '../ContextComponents/ContextComponents';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UserContext from '../ContextComponents/ContextComponents'
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [UserType, setUserType] = useState('');
-  const { user, setUser } = useContext(UserContext)
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const defaultTheme = createTheme();
+
+export default function SignInSide() {
+  const [userRequest, setuserRequest] = useState({});
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setuserRequest((values) => ({ ...values, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,25 +52,19 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email, password: password }),
+        body: JSON.stringify({ email : userRequest.email, password: userRequest.password }),
       });
 
       if (response.status === 200) {
-
         const data = await response.json();
-        const token = data.token;
-        // const employee = data.employee
 
-        // setUser(employee)
+        setUser(data)
+        // const jwtToken = data.token;
+        // const userId = data.userId;
+        // localStorage.setItem('jwtToken', jwtToken);
+        // localStorage.setItem('userId', userId);
 
-        // localStorage.setItem('user', JSON.stringify(employee))
-        // localStorage.setItem('token', token)
-    
-        if (UserType === "Staff") {
-          navigate('/staffHome');
-        }else if (UserType === "Manager"){
-          navigate('/managerHome');
-        }
+        navigate('/userHome');
       } else {
         toast.warn('Please enter correct details..!', {
           position: "top-center",
@@ -68,54 +92,91 @@ const Login = () => {
   };
 
   return (
-    <div className="login_page">
-      <div className="heading"><a href="/" className="loginCompanyName"><h1 className="log_sign_heading_name">MBKT Construction</h1></a>
-        <ul class="nav justify-content-end nav-underline" id="IndexHeading">
-          <li class="nav-item1" id="Login">
-            <a class="nav-link" href="/login" id="LoginLink">LOGIN</a>
-          </li>
-        </ul>
-      </div>
-      <br /><br />
-      <div className="loginDev1">
-        <img src={login_logo} className="loginImg" />
-        <div className="login_form">
-
-          <form action="POST" onSubmit={handleSubmit}>
-            <div>
-              <h1 className="login">Login</h1>
-            </div>
-            <div>
-              <label for="UserType" className="loginheading">UserType: </label><br />
-              <select className="form-select-lg loginform-select" required={true} id="UserType" name="UserType" onChange={(e) => {
-                setUserType(e.target.value)
-              }} value={UserType} style={{ backgroundColor: "aliceblue", fontWeight: "500" }}>
-                <option defaultValue >Select Type</option>
-                <option value="Staff">Staff</option>
-                <option value="Manager">Manager</option>
-              </select>
-            </div>
-            <label for="email" className="loginheading">Email: </label><br />
-            <input type="email" className="loginforminput" placeholder="Email" onChange={(e) => {
-              setEmail(e.target.value)
-            }} value={email} /><br />
-
-            <label for="password" className="loginheading">Password: </label><br />
-            <input type="password" className="loginforminput" placeholder="Password" onChange={(e) => {
-              setPassword(e.target.value)
-            }} value={password} /><br /><br /><br/>
-
-            <button type="submit" className="loginsubmit">LOGIN</button><br /><br />
-          </form>
-        </div>
-      </div>
-      <br /><br /><br /><br />
-      <p className='FNFooterBottom' style={{ color: "black" }}>
-        © 2023 MBKT Construction All Rights Reserved.
-      </p>
-      <ToastContainer />
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={handleChange}
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={handleChange}
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
-};
-
-export default Login;
+}

@@ -28,6 +28,12 @@ public class HotelServiceImpl implements HotelService {
         hotel.setHotelName(addHotelRequest.getHotelName());
         hotel.setHotelAddress(addHotelRequest.getHotelAddress());
         hotel.setHotelEmail(addHotelRequest.getHotelEmail());
+        hotel.setHotelDescription(addHotelRequest.getHotelDescription());
+        hotel.setHotelCity(addHotelRequest.getHotelCity());
+        hotel.setHotelCountry(addHotelRequest.getHotelCountry());
+        hotel.setHotelState(addHotelRequest.getHotelState());
+        hotel.setHotelPostalCode(addHotelRequest.getHotelPostalCode());
+
 
         return hotelRepository.save(hotel);
 
