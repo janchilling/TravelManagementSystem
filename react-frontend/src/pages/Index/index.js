@@ -7,7 +7,7 @@ export default function Index() {
     return (
         <div className="index_bg">
             <div>
-                <h1 className="name">MBKT Construction</h1>
+                <h1 className="name">Travee</h1>
             </div>
             <br/>
             <div className="IndexSecondDiv">
@@ -17,16 +17,16 @@ export default function Index() {
                 <div className="IndexPicPara">
                     <img src={logo} className="logoIndex" />
                     <div className="he1">
-                        <p>Core Construction Services</p>
+                        <p>Your favorite travel buddy</p>
                     </div>
                     <div className="he2">
-                        <p>"High Quality Construction Work to the Max"</p>
+                        <p>"Travee will manage all the itenerry for you!"</p>
                     </div>
                     <div className="he3">
                         <p onClick={(e) => {
                             e.preventDefault();
                             window.location.href = `/`;
-                        }}>www.MBKT--Construction.lk</p>
+                        }}>www.travee.lk</p>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@ export default function Index() {
             }}>LOGIN</button> 
             <br /><br/>
             <p className='FNFooterBottom' style={{ color: "black" }}>
-                © 2023 MBKT Construction All Rights Reserved.
+                © 2023 Travee All Rights Reserved.
             </p>
 
         </div>
